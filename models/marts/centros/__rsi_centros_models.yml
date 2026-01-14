@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: rsi_jerarquia_centros
+  - name: rsi_jerarquias_centros
     description: "Modelo de la capa Gold que define la jerarquía organizacional, identificando centros dependientes, superiores y la clasificación de áreas y zonas."
     columns:
       - name: centro_dep
