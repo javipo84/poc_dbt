@@ -1,0 +1,166 @@
+version: 2
+
+models:
+  - name: tr_centros
+    description: Este modelo proporciona información detallada sobre los distintos centros, incluyendo códigos internos, nombres, y datos geográficos. Es útil para identificar y categorizar los centros según su ubicación y otras características.
+    columns:
+      - name: cod_interno_uo
+        description: Código interno de la unidad organizativa.
+        data_tests:
+          - unique
+          - not_null
+      - name: nomb_cent_uo
+        description: Nombre de la unidad organizativa.
+        data_tests:
+          - not_null
+      - name: cod_provincia_ag
+        description: Código de la provincia donde se encuentra el centro.
+        data_tests:
+          - not_null
+      - name: cod_municipio_ag
+        description: Código del municipio donde se encuentra el centro.
+        data_tests:
+          - not_null
+      - name: fecha_inic_ecv
+        description: Fecha de inicio de la actividad económica del centro.
+        data_tests:
+          - not_null
+      - name: cod_mdldad_cent
+        description: Código de modalidad del centro.
+        data_tests:
+          - not_null
+      - name: id_interno_pe
+        description: Identificador interno de la persona o entidad asociada al centro.
+        data_tests:
+          - unique
+          - not_null
+      - name: cod_postal_ag
+        description: Código postal donde se ubica el centro.
+        data_tests:
+          - not_null
+      - name: nomb_50
+        description: Nombre abreviado del centro, limitado a 50 caracteres.
+        data_tests:
+          - not_null
+      - name: num_tlfno_domic
+        description: Número de teléfono del domicilio del centro.
+        data_tests:
+          - not_null
+      - name: nomb_localidad_ag
+        description: Nombre de la localidad donde se encuentra el centro.
+        data_tests:
+          - not_null
+      - name: mi_otro_dom
+        description: Información adicional de la dirección del centro.
+        data_tests:
+          - not_null
+
+  - name: tr_centros_direlect
+    description: Este modelo consolida información sobre direcciones electrónicas y centros para una entidad específica. Integra datos de domicilios de clientes, centros y directorios electrónicos para proporcionar una visión completa de los datos de contacto electrónico asociados a los centros.
+    columns:
+      - name: cod_interno_uo
+        description: Código interno de la unidad organizativa.
+        data_tests:
+          - not_null
+      - name: ind_direc
+        description: Indicador del tipo de dirección.
+        data_tests:
+          - not_null
+      - name: nomb_cent_uo
+        description: Nombre del centro de la unidad organizativa.
+        data_tests:
+          - not_null
+      - name: cod_mdldad_cent
+        description: Código que representa la modalidad del centro.
+        data_tests:
+          - not_null
+      - name: num_dir
+        description: Número que representa la dirección.
+        data_tests:
+          - not_null
+      - name: id_interno_pe
+        description: Identificador interno de la persona asociada a la dirección.
+        data_tests:
+          - not_null
+      - name: cod_dir
+        description: Código de la dirección.
+        data_tests:
+          - not_null
+      - name: mi_fecha_inic
+        description: Fecha de inicio del registro de la dirección.
+        data_tests:
+          - not_null
+      - name: txt_elctr_dr_ampl
+        description: Texto ampliado de la dirección electrónica.
+        data_tests:
+          - not_null
+      - name: valor_elctr_dr_text
+        description: Valor de texto de la dirección electrónica, sin el código de país.
+        data_tests:
+          - not_null
+      - name: txt_elctr_dr
+        description: Texto de la dirección electrónica.
+        data_tests:
+          - not_null
+      - name: cod_dir_elctr
+        description: Código de la dirección electrónica.
+        data_tests:
+          - not_null          
+
+  - name: rsi_jerarquias_centros
+    description: Este modelo organiza y clasifica los centros según sus relaciones jerárquicas y características. Determina el tipo y área de cada centro, identifica el número de empleados asignados y clasifica los centros en diferentes categorías como 'O', 'Z', 'D', 'A', 'V', 'G' y 'C'. Esta información es clave para entender la estructura y distribución de los centros dentro de la organización.
+    columns:
+      - name: centro_dep
+        description: Código del centro dependiente, que representa el centro bajo supervisión.
+        data_tests:
+          - not_null
+      - name: nomcentro_dep
+        description: Nombre del centro dependiente.
+        data_tests:
+          - not_null
+      - name: cod_mdldad_cent_dep
+        description: Código de modalidad del centro dependiente.
+        data_tests:
+          - not_null
+      - name: todos_o_ofic
+        description: Indicador de si el centro es oficina u otro tipo.
+        data_tests:
+          - not_null
+      - name: centro_sup
+        description: Código del centro supervisor, que representa el centro que supervisa a otros.
+        data_tests:
+          - not_null
+      - name: nomcentro_sup
+        description: Nombre del centro supervisor.
+        data_tests:
+          - not_null
+      - name: cod_mdldad_cent_sup
+        description: Código de modalidad del centro supervisor.
+        data_tests:
+          - not_null
+      - name: ind_area_zona
+        description: Indicador de si el área es zona.
+        data_tests:
+          - not_null
+      - name: num_area
+        description: Número asignado al área.
+        data_tests:
+          - not_null
+      - name: nombre_area
+        description: Nombre del área.
+        data_tests:
+          - not_null
+      - name: family
+        description: Categoría familiar del centro.
+        data_tests:
+          - not_null
+      - name: tipo_cent_dep
+        description: Tipo del centro dependiente, derivado de diversas condiciones.
+      - name: n_emple_asig
+        description: Número de empleados asignados al centro.
+        data_tests:
+          - not_null
+      - name: nivel
+        description: Nivel jerárquico del centro.
+        data_tests:
+          - not_null          

@@ -1,0 +1,371 @@
+version: 2
+
+sources:
+  - name: centros
+    database: caja-rural-granada-crgnaa
+    schema: poc_transformacion
+    description: Datasets para el flujo de datos de centros
+    config:    
+      meta:
+        owner: "data_engineering_team"
+        owner_email: "data_engineering@cajarural.com"
+        source_system: "Oracle"      
+        update_frequency: "Daily"
+        source_system_contact: "crm_support@cajarural.com"
+      tags: 
+        - 'centros'
+        - 'source:oracle'
+        - 'tier:bronze'
+        - 'domain:centros'    
+    tables:    
+      - name: mi_centro
+        description: "Información completa de los centros: códigos internos, modalidades, nombres y atributos físicos."
+        config:
+          freshness:
+            warn_after: {count: 12, period: hour}
+            error_after: {count: 24, period: hour}
+          loaded_at_field: fecha_carga
+          meta:
+            has_pii: "yes"
+            data_sensitivity: "high"
+            business_owner: "RSI"
+        
+        columns:
+          - name: mi_fecha_fin
+            description: "Fecha de fin de la vigencia del registro."
+            data_tests:
+              - not_null        
+          - name: cod_nrbe_en
+            description: "Código interno NRBE."
+            data_tests:
+              - not_null                    
+          - name: cod_interno_uo
+            description: "Código interno de la unidad organizativa."
+            data_tests:
+              - not_null                                          
+          - name: mi_fecha_inic
+            description: "Fecha de inicio de la vigencia del registro."
+          - name: mi_cod_interno_cor
+            description: "Código interno del centro en nivel corporativo."
+            data_tests:
+              - not_null                  
+          - name: mi_nom_cent_cor
+            description: "Nombre del centro a nivel corporativo."
+          - name: mi_cod_interno_ter
+            description: "Código interno del centro en nivel territorial."
+            data_tests:
+              - not_null                                                    
+          - name: mi_nom_cent_ter
+            description: "Nombre del centro territorial."
+            data_tests:
+              - not_null                
+          - name: cod_mdldad_cent
+            description: "Modalidad del centro (ej. oficina, zona, SSCC)."
+            data_tests:
+              - not_null                
+          - name: nomb_cent_uo
+            description: "Nombre del centro."
+            data_tests:
+              - not_null                
+          - name: cod_ecv_cent
+            description: "Estado del centro."
+            data_tests:
+              - not_null                
+          - name: fecha_inic_ecv
+            description: "Fecha de inicio del estado."
+            data_tests:
+              - not_null                
+          - name: cod_csb_of
+            description: "Código CSB asociado a la oficina."
+            data_tests:
+              - not_null                
+          - name: cod_provincia_ag
+            description: "Código de provincia."
+            data_tests:
+              - not_null                
+          - name: cod_municipio_ag
+            description: "Código de municipio."
+            data_tests:
+              - not_null                
+          - name: cod_ent_colec_ag
+            description: "Código de entidad colectiva."
+          - name: cod_ent_sing_ag
+            description: "Código de entidad singular."
+          - name: id_interno_pe
+            description: "Identificador de persona interna (responsable asignado)."
+          - name: cod_dir
+            description: "Código de dirección."
+          - name: num_dir
+            description: "Número de dirección."
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('centros','mi_domicilio')
+                    field: num_dir            
+          - name: fecha_inic_rl
+            description: "Fecha de inicio de la relación de dirección."
+          - name: hora_oprcn
+            description: "Hora de operación del registro."
+          - name: fecha_fin_rl
+            description: "Fecha de fin de la relación."
+
+      - name: mi_cent_rl_cent
+        description: "Relación jerárquica entre centros (centro dependiente y centro superior)."
+        columns:
+          - name: mi_fecha_fin
+            description: "Fecha de fin de la relación."
+            data_tests:
+              - not_null                
+          - name: cod_nrbe_en
+            description: "Código interno NRBE."
+            data_tests:
+              - not_null                
+          - name: cod_interno_uo
+            description: "Código interno de la unidad organizativa dependiente."
+            data_tests:
+              - not_null                
+          - name: cod_interno_uo_1
+            description: "Código interno de la unidad organizativa superior."
+            data_tests:
+              - not_null                
+          - name: cod_cent_rl_cent
+            description: "Código de la relación entre centros."
+            data_tests:
+              - not_null                
+          - name: mi_fecha_inic
+            description: "Fecha de inicio de la relación."
+            data_tests:
+              - not_null                
+          - name: fecha_inic_act_uo
+            description: "Fecha de inicio de la actividad de la UO."
+            data_tests:
+              - not_null                
+          - name: fecha_fin_act_uo
+            description: "Fecha de fin de la actividad de la UO."
+            data_tests:
+              - not_null                
+
+      - name: mi_clte_domic
+        description: "Relación entre cliente y domicilio."
+        columns:
+          - name: foclist
+            description: "Indicador de focalización."
+            data_tests:
+              - not_null               
+          - name: mi_fecha_fin
+            description: "Fecha de fin del registro."
+            data_tests:
+              - not_null               
+          - name: cod_nrbe_en
+            description: "Código interno NRBE."
+            data_tests:
+              - not_null               
+          - name: id_interno_pe
+            description: "Identificador interno de persona."
+            data_tests:
+              - not_null               
+          - name: cod_pers_rl_dir
+            description: "Código de relación persona-dirección."
+            data_tests:
+              - not_null               
+          - name: num_dir
+            description: "Número de dirección."
+            data_tests:
+              - not_null               
+          - name: cod_dir
+            description: "Código de dirección."
+            data_tests:
+              - not_null               
+          - name: mi_fecha_inic
+            description: "Fecha de inicio del registro."
+            data_tests:
+              - not_null               
+          - name: fecha_inic_rl
+            description: "Fecha de inicio de la relación."
+            data_tests:
+              - not_null               
+          - name: hora_oprcn
+            description: "Hora de operación del registro."
+            data_tests:
+              - not_null               
+          - name: ind_direc
+            description: "Indicador del tipo de dirección (principal, secundaria, etc.)."
+
+      - name: mi_dir_electr
+        description: "Direcciones electrónicas asociadas: emails, teléfonos, etc."
+        columns:
+          - name: foclist
+            description: "Indicador de focalización."
+            data_tests:
+              - not_null               
+          - name: cod_nrbe_en
+            description: "Código interno NRBE."
+            data_tests:
+              - not_null               
+          - name: num_dir
+            description: "Número de dirección."
+            data_tests:
+              - not_null               
+          - name: p_fecha_proceso
+            description: "Fecha del proceso de carga."
+            data_tests:
+              - not_null               
+          - name: cod_dir_elctr
+            description: "Código de la dirección electrónica."
+            data_tests:
+              - not_null               
+          - name: valor_elctr_dr_text
+            description: "Valor de la dirección electrónica en texto."
+            data_tests:
+              - not_null               
+          - name: txt_elctr_dr
+            description: "Texto de la dirección electrónica."
+            data_tests:
+              - not_null               
+          - name: txt_elctr_dr_ampl
+            description: "Texto ampliado de la dirección electrónica."
+            data_tests:
+              - not_null               
+          - name: ind_error_dom
+            description: "Indicador de error en el domicilio."
+            data_tests:
+              - not_null               
+
+      - name: mi_domicilio
+        description: "Información detallada de domicilios físicos."
+        columns:
+          - name: foclist
+            description: "Indicador de focalización."
+          - name: mi_fecha_fin
+            description: "Fecha de fin."
+          - name: cod_nrbe_en
+            description: "Código interno NRBE."
+          - name: num_dir
+            description: "Número de dirección."
+            data_tests:
+              - not_null               
+          - name: mi_fecha_inic
+            description: "Fecha de inicio."
+            data_tests:
+              - not_null               
+          - name: cod_via
+            description: "Código de vía pública."
+            data_tests:
+              - not_null               
+          - name: cod_regim_ocup
+            description: "Código del régimen de ocupación."
+          - name: nombre_via
+            description: "Nombre de la vía."
+          - name: val_domic_numero
+            description: "Número del domicilio."
+          - name: val_domic_portal
+            description: "Portal del domicilio."
+          - name: val_dom_escalera
+            description: "Escalera del domicilio."
+          - name: val_domic_planta
+            description: "Planta del domicilio."
+          - name: val_domic_puerta
+            description: "Puerta del domicilio."
+          - name: cod_postal_ag
+            description: "Código postal."
+          - name: num_ar_geo
+            description: "Número de área geográfica."
+          - name: nomb_correo
+            description: "Nombre de la zona postal."
+          - name: num_tlfno_domic
+            description: "Teléfono asociado al domicilio."
+          - name: cod_ar_geo
+            description: "Código de área geográfica."
+          - name: cod_com_autnma_ag
+            description: "Código de comunidad autónoma."
+          - name: cod_pais_ag
+            description: "Código de país."
+          - name: nomb_localidad_ag
+            description: "Nombre de la localidad."
+          - name: nomb_50
+            description: "Nombre abreviado (50 chars)."
+          - name: mi_bloque
+            description: "Bloque."
+          - name: mi_fase
+            description: "Fase."
+          - name: mi_edificio
+            description: "Edificio."
+          - name: mi_barrio
+            description: "Barrio."
+          - name: mi_poligono
+            description: "Polígono."
+          - name: mi_urban
+            description: "Urbanización."
+          - name: mi_parcela
+            description: "Parcela."
+          - name: mi_otro_dom
+            description: "Otras referencias del domicilio."
+          - name: cod_provincia_ag
+            description: "Código de provincia."
+          - name: cod_municipio_ag
+            description: "Código de municipio."
+          - name: ind_error_dom
+            description: "Indicador de error en el domicilio."
+
+      - name: names_empleados
+        description: "Datos limpios de empleados con variaciones de nombre, cargos y centros asignados."
+        columns:
+          - name: id_empleado
+            description: "Identificador del empleado."
+            data_tests:
+              - not_null               
+          - name: num_empleado
+            description: "Número de empleado."
+            data_tests:
+              - not_null               
+          - name: nombre_minus
+            description: "Nombre en minúsculas."
+            data_tests:
+              - not_null               
+          - name: apellidos_minus
+            description: "Apellidos en minúsculas."
+          - name: nombre_apellidos_minus
+            description: "Nombre + apellidos en minúsculas."
+          - name: apellidos_nombre_minus
+            description: "Apellidos + nombre en minúsculas."
+          - name: nombre_mayus
+            description: "Nombre en mayúsculas."
+          - name: apellidos_mayus
+            description: "Apellidos en mayúsculas."
+          - name: nombre_apellidos_mayus
+            description: "Nombre + apellidos en mayúsculas."
+          - name: apellidos_nombre_mayus
+            description: "Apellidos + nombre en mayúsculas."
+          - name: id_interno_pe
+            description: "Identificador interno de persona."
+          - name: email
+            description: "Correo electrónico del empleado."
+          - name: cod_cargo_empl
+            description: "Código del cargo del empleado."
+          - name: cargo_empl
+            description: "Nombre del cargo."
+          - name: puesto_plantilla
+            description: "Puesto en la plantilla."
+          - name: centro_plantilla
+            description: "Centro de plantilla del empleado."
+          - name: nomcentro_plantilla
+            description: "Nombre del centro de plantilla."
+          - name: ofic_sscc
+            description: "Indica si pertenece a SSCC o a oficina."
+          - name: centro_asig
+            description: "Centro asignado."
+          - name: nomcentro_asig
+            description: "Nombre del centro asignado."
+          - name: centro_sup
+            description: "Centro superior."
+          - name: nomcentro_sup
+            description: "Nombre del centro superior."     
+      - name: categoria_oficinas_2025
+        description: "Clasificación/categoría asignada a cada oficina para el año 2025."
+        columns:
+          - name: num_ofi
+            description: "Número identificador de la oficina."
+            data_tests:
+              - not_null               
+          - name: categoria
+            description: "Categoría asignada a la oficina."

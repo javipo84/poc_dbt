@@ -1,0 +1,105 @@
+version: 2
+
+models:
+  - name: rsi_jerarquia_centros
+    description: "Modelo de la capa Gold que define la jerarquía organizacional, identificando centros dependientes, superiores y la clasificación de áreas y zonas."
+    columns:
+      - name: centro_dep
+        description: "Código identificador del centro dependiente (hijo)."
+        tests:
+          - not_null
+      - name: nomcentro_dep
+        description: "Nombre descriptivo del centro dependiente."
+      - name: cod_mdldad_cent_dep
+        description: "Código de modalidad del centro dependiente (ej. 05, 06 para oficinas)."
+      - name: todos_o_ofic
+        description: "Clasificación simplificada: 'O' (Oficina), 'Z' (Zona) o 'D' (Departamento/Otros)."
+      - name: centro_sup
+        description: "Código identificador del centro superior (padre) inmediato."
+      - name: nomcentro_sup
+        description: "Nombre descriptivo del centro superior."
+      - name: cod_mdldad_cent_sup
+        description: "Código de modalidad del centro superior."
+      - name: ind_area_zona
+        description: "Indicador de nivel jerárquico: 'A' para Áreas y 'Z' para Zonas."
+      - name: num_area
+        description: "Código asignado a la agrupación de área/zona según la estructura comercial."
+      - name: nombre_area
+        description: "Nombre de la demarcación geográfica o administrativa (Área/Zona)."
+      - name: family
+        description: "Identificador de la familia o agrupación de centros."
+      - name: tipo_cent_dep
+        description: "Tipo de centro refinado (V: Ventas, G: Gestión, C: Central, O: Oficina, Z: Zona, D: Departamento)."
+      - name: n_emple_asig
+        description: "Número total de empleados asignados al centro con email válido."
+      - name: nivel
+        description: "Nivel de profundidad en el árbol jerárquico (1 es el nivel superior)."
+
+  - name: rsi_tr_centros
+    description: "Modelo maestro de centros que consolida la jerarquía con información de contacto (email, teléfono, fax) y categorías comerciales."
+    columns:
+      - name: centro
+        description: "Código interno único de la Unidad Operativa (centro)."
+        tests:
+          - unique
+          - not_null
+      - name: nomcentro
+        description: "Nombre oficial del centro."
+      - name: zona
+        description: "Código de la zona a la que pertenece el centro (0000 si no tiene zona)."
+      - name: nomzona
+        description: "Nombre de la zona superior asignada."
+      - name: nombrezona
+        description: "Siglas o código corto de la zona (ej. SI, MA, VE) basado en centros territoriales específicos."
+      - name: todos_o_ofic
+        description: "Categorización del centro: 'O' (Oficina), 'Z' (Zona), 'F' (Fuera de red/Disponibles), 'C' (Cajeros) o 'D' (Resto)."
+      - name: cod_mdldad_cent
+        description: "Código de modalidad de actividad del centro."
+      - name: centro_sup
+        description: "Código del centro del que depende jerárquicamente en nivel 1."
+      - name: nomcentro_sup
+        description: "Nombre del centro superior jerárquico."
+      - name: num_area
+        description: "Número identificador del área comercial."
+      - name: nombre_area
+        description: "Nombre descriptivo del área comercial."
+      - name: tipo_cent_dep
+        description: "Clasificación del tipo de dependencia del centro."
+      - name: e_mail
+        description: "Dirección de correo electrónico principal del centro."
+      - name: e_mail_alias
+        description: "Dirección de correo alternativa o alias (normalizada a @crgranada.com)."
+      - name: interno_pe
+        description: "Identificador interno de la persona/entidad asociada al centro."
+      - name: nomb_localidad_ag
+        description: "Localidad donde se ubica el centro."
+      - name: cod_provincia_ag
+        description: "Código de la provincia de ubicación."
+      - name: cod_municipio_ag
+        description: "Código del municipio de ubicación."
+      - name: cod_postal_ag
+        description: "Código postal del centro."
+      - name: domic_50
+        description: "Domicilio abreviado o principal del centro."
+      - name: telefono
+        description: "Número de teléfono principal del centro."
+      - name: otros_datos
+        description: "Información adicional de domicilio u observaciones."
+      - name: fecha_inic_ecv
+        description: "Fecha de inicio de actividad o estado actual."
+      - name: categoria
+        description: "Categoría comercial de la oficina (según clasificación 2025)."
+      - name: fax_ext_1
+        description: "Extensión del primer fax."
+      - name: fax_tel_1
+        description: "Número telefónico asociado al primer fax."
+      - name: fax_txt_1
+        description: "Descripción o texto identificativo del primer fax."
+      - name: movil_num_1
+        description: "Número de teléfono móvil principal del centro."
+      - name: telefono_num_1
+        description: "Número de teléfono 1."
+      - name: telefono_num_2
+        description: "Número de teléfono 2."
+      - name: telefono_num_3
+        description: "Número de teléfono 3."
