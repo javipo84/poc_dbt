@@ -1,0 +1,11 @@
+[sqlfluff]
+# Dialecto de SQL usado
+dialect = bigquery
+exclude_rules = LT05,LT02,AM05,ST05,ST06
+
+[sqlfluff:rules]
+ignore = LT03, LT05, PRS
+
+[sqlfluff:templater:dbt]
+# Para proyectos dbt
+ignore_templated_areas = True
