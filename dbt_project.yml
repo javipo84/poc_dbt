@@ -36,10 +36,10 @@ clean-targets:         # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 
 models:
-  poc_caja_rural:
-    # Applies to all files under models/example/
+  poc_caja_rural:    
     staging:
+      +schema: "dbt_{{ env_var('DBT_DATABASE_ENVIRONMENT') }}_silver"
       +materialized: view
-
     marts:
+      +schema: "dbt_{{ env_var('DBT_DATABASE_ENVIRONMENT') }}_gold"
       +materialized: table      
